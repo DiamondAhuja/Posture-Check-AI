@@ -1,69 +1,75 @@
-# React + TypeScript + Vite
+# Posture Check AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI-powered posture detection app using your PC camera, with **trainable personal calibration**. Runs entirely on-device with TensorFlow.js — no frames are uploaded.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Live webcam feed with real-time pose detection (MoveNet SinglePose Thunder)
+- Extracts posture-relevant features (neck tilt, shoulder slope, ear-to-shoulder distance, asymmetry)
+- Trainable classifier tailored to your posture and camera setup
+- Record “Good” and “Not Good” samples for personal calibration
+- Save/load trained model in your browser (IndexedDB)
+- Visual feedback and confidence scoring
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [Vite](https://vitejs.dev/) + [React](https://react.dev/) + TypeScript
+- [TensorFlow.js](https://www.tensorflow.org/js) with [MoveNet](https://www.tensorflow.org/lite/models/pose_estimation/overview)
+- IndexedDB for model storage
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🚀 Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 1. Clone the repo
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/YOUR_USERNAME/posture-check-ai.git
+cd posture-check-ai
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### 3. Run locally
+
+```bash
+npm run dev
+```
+
+### 4. Build for production
+
+```bash
+npm run build
+npm run preview
+```
+
+## 📋 Usage
+
+1. **Record Good:** Sit upright, look forward, click `Record Good`, wait ~10–15 seconds, click `Stop`.
+2. **Record Not Good:** Slouch or lean, click `Record Not Good`, wait ~10–15 seconds, click `Stop`.
+3. **Train:** Enabled when enough samples are collected. Click to train your model.
+4. **Save:** Stores your trained model in your browser.
+5. **Load:** Loads your saved model for future sessions.
+6. **Reset:** Clears samples and model.
+
+## 🔍 Model Details
+
+- **Pose detection:** MoveNet SinglePose Thunder (more accurate than Lightning; requires slightly more compute)
+- **Classifier:** Small dense neural net trained on personal posture samples
+- **Features:** 6 angles/distances extracted from keypoints, normalized for body size
+
+## 📄 License
+
+MIT — free to use and modify.
+
+---
+
+### Tips for Best Accuracy
+
+- Place your camera at shoulder height, facing you
+- Ensure good lighting
+- Avoid baggy clothing covering shoulders
+- Collect at least 60–100 samples per class for training
+- Recalibrate if your seating or camera angle changes
