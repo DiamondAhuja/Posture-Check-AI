@@ -1,0 +1,110 @@
+:root {
+  --bg: #0b1020;
+  --panel: #121833;
+  --muted: #8aa0ff;
+  --ok: #38d39f;
+  --warn: #ffcc66;
+  --bad: #ff6b6b;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+button {
+  cursor: pointer;
+}
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #202a55;
+  background: var(--panel);
+}
+.header h1 {
+  margin: 0;
+  font-size: 18px;
+}
+.container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+  padding: 16px;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid #1b2350;
+  border-radius: 14px;
+  padding: 14px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.small {
+  opacity: 0.8;
+  font-size: 12px;
+}
+.badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #1b2350;
+  border: 1px solid #26306b;
+}
+
+.videoWrap {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #081024;
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.hud {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.hud .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.calibBtns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.calibBtns button {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #26306b;
+  background: #182151;
+  color: #e6e9ef;
+}
+.calibBtns button.primary {
+  border-color: #3b66ff;
+  background: #2a3c8c;
+}
+.calibBtns button:disabled {
+  opacity: 0.6;
+}
+
+.footer {
+  padding: 10px 16px;
+  border-top: 1px solid #202a55;
+  opacity: 0.8;
+}
