@@ -38,7 +38,7 @@ export function usePoseDetector() {
       await v.play();
       const d = await posedetection.createDetector(
         posedetection.SupportedModels.MoveNet,
-        { modelType: posedetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+        { modelType: posedetection.movenet.modelType.SINGLEPOSE_THUNDER }
       );
       if (!active) return;
       setDetector(d);

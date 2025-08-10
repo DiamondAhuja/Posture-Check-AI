@@ -9,69 +9,95 @@ interface Props {
   onLoad: () => Promise<void>;
   onReset: () => void;
   canTrain: boolean;
+  recording: "none" | "good" | "bad";
+  isTraining: boolean;
+  isTrained: boolean;
+  uiMsg: string;
   samplesGood: number;
   samplesBad: number;
 }
 
 export default function CalibrationPanel(p: Props) {
-  const [recording, setRecording] = React.useState<"none" | "good" | "bad">(
-    "none"
-  );
-
-  const startGood = () => {
-    setRecording("good");
-    p.onStartGood();
-  };
-  const startBad = () => {
-    setRecording("bad");
-    p.onStartBad();
-  };
-  const stop = () => {
-    setRecording("none");
-    p.onStop();
-  };
+  const recColor =
+    p.recording === "good"
+      ? "var(--ok)"
+      : p.recording === "bad"
+      ? "var(--bad)"
+      : "#26306b";
 
   return (
     <div>
       <h3 style={{ marginTop: 0 }}>Calibration</h3>
-      <ol className="small" style={{ opacity: 0.9 }}>
-        <li>Sit in your best posture, look forward.</li>
-        <li>
-          Record 10–15 seconds of <b>Good</b> and 10–15 seconds of{" "}
-          <b>Not Good</b>.
-        </li>
-        <li>Train, then save your model.</li>
-      </ol>
+      <div className="row" style={{ gap: 10, marginBottom: 8 }}>
+        <div className="badge small" style={{ background: recColor }}>
+          {p.recording === "none"
+            ? "Idle"
+            : p.recording === "good"
+            ? "Recording: GOOD"
+            : "Recording: NOT GOOD"}
+        </div>
+        <div className="badge small">good: {p.samplesGood}</div>
+        <div className="badge small">not good: {p.samplesBad}</div>
+        <div className="badge small">
+          model: {p.isTrained ? "ready" : "untrained"}
+        </div>
+      </div>
 
       <div className="calibBtns" style={{ marginTop: 12 }}>
         <button
-          disabled={recording !== "none"}
-          onClick={startGood}
+          disabled={p.recording !== "none"}
+          onClick={p.onStartGood}
           className="primary"
         >
           Record Good
         </button>
-        <button disabled={recording !== "none"} onClick={startBad}>
+        <button disabled={p.recording !== "none"} onClick={p.onStartBad}>
           Record Not Good
         </button>
-        <button disabled={recording === "none"} onClick={stop}>
+        <button disabled={p.recording === "none"} onClick={p.onStop}>
           Stop
         </button>
       </div>
 
-      <div className="row" style={{ marginTop: 10 }}>
-        <div className="badge small">good: {p.samplesGood}</div>
-        <div className="badge small">not good: {p.samplesBad}</div>
-      </div>
-
-      <div className="calibBtns" style={{ marginTop: 16 }}>
-        <button disabled={p.canTrain} onClick={p.onTrain} className="primary">
-          Train
+      <div className="calibBtns" style={{ marginTop: 12 }}>
+        <button
+          disabled={p.canTrain || p.isTraining}
+          onClick={p.onTrain}
+          className="primary"
+        >
+          {p.isTraining ? "Training…" : "Train"}
         </button>
-        <button onClick={p.onSave}>Save</button>
+        <button onClick={p.onSave} disabled={!p.isTrained}>
+          Save
+        </button>
         <button onClick={p.onLoad}>Load</button>
         <button onClick={p.onReset}>Reset</button>
       </div>
+
+      <div className="panel" style={{ marginTop: 12, padding: 10 }}>
+        <div className="small" style={{ opacity: 0.9 }}>
+          {p.uiMsg}
+        </div>
+      </div>
+
+      <ol className="small" style={{ opacity: 0.8, marginTop: 12 }}>
+        <li>
+          Click <b>Record Good</b> for ~10–15s while sitting upright. Then click{" "}
+          <b>Stop</b>.
+        </li>
+        <li>
+          Click <b>Record Not Good</b> and deliberately slouch/lean for ~10–15s.
+          Then <b>Stop</b>.
+        </li>
+        <li>
+          When both counters are high enough, click <b>Train</b>. After
+          training, predictions go live.
+        </li>
+        <li>
+          (Optional) <b>Save</b> stores your model in-browser. Next time, click{" "}
+          <b>Load</b>.
+        </li>
+      </ol>
     </div>
   );
 }
