@@ -22,7 +22,7 @@ AI-powered posture detection app using your PC camera, with **trainable personal
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/posture-check-ai.git
+git clone https://github.com/DiamondAhuja/posture-check-ai.git
 cd posture-check-ai
 ```
 
